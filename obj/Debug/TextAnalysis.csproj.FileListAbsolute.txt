@@ -1,0 +1,11 @@
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\bin\Debug\TextAnalysis.exe.config
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\bin\Debug\HarryPotterText.txt
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\bin\Debug\TextAnalysis.exe
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\bin\Debug\TextAnalysis.pdb
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\bin\Debug\nunit.framework.dll
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\bin\Debug\nunitlite.dll
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\obj\Debug\TextAnalysis.csprojResolveAssemblyReference.cache
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\obj\Debug\TextAnalysis.Properties.Resources.resources
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\obj\Debug\TextAnalysis.csproj.GenerateResource.Cache
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\obj\Debug\TextAnalysis.exe
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\obj\Debug\TextAnalysis.pdb
