@@ -27,16 +27,12 @@ namespace TextAnalysis
                     {
                         wordBuilder.Append(sentence[i]);
                         if (sentence.Length == i + 1)
-                        {
-                            sentenceByWords.Add(wordBuilder.ToString().ToLower());
-                            wordBuilder.Clear();
-                        }
+                            sentenceByWords.Add(GetLowerTextAndClearBuilder(wordBuilder));
                     }
                     else
                     {
                         if (wordBuilder.Length > 0)
-                            sentenceByWords.Add(wordBuilder.ToString().ToLower());
-                        wordBuilder.Clear();
+                            sentenceByWords.Add(GetLowerTextAndClearBuilder(wordBuilder));
                     }
                 }
             return sentenceByWords;
