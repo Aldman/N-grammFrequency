@@ -9,10 +9,17 @@ namespace TextAnalysis
         public static List<List<string>> ParseSentences(string text)
         {
             var sentencesList = new List<List<string>>();
-            var sentencesArray = text.Split(new char [] { '.', '!', '?', ';', ':', '(', ')' });
-            if (sentencesArray != null)
-                foreach (var sentence in sentencesArray)
-                    sentencesList.Add(SplitSentenceByWords(sentence));
+            var sentencesArray = text.Split(new string [] { ".", "!", "?", ";", ":", "(", ")" }, StringSplitOptions.None);
+            var sentenceByWords = new List<string>();
+            foreach (var sentence in sentencesArray)
+            {
+                if (!String.IsNullOrEmpty(sentence) && !String.IsNullOrWhiteSpace(sentence))
+                {
+                    sentenceByWords = SplitSentenceByWords(sentence);
+                    if (sentenceByWords != null)
+                        sentencesList.Add(sentenceByWords);
+                }
+            }
             return sentencesList;
         }
 
@@ -20,6 +27,7 @@ namespace TextAnalysis
         {
             var wordBuilder = new StringBuilder();
             var sentenceByWords = new List<string>();
+            
             if (!String.IsNullOrEmpty(sentence))
                 for (int i = 0; i < sentence.Length; i++)
                 {
@@ -35,6 +43,8 @@ namespace TextAnalysis
                             sentenceByWords.Add(GetLowerTextAndClearBuilder(wordBuilder));
                     }
                 }
+            if (sentenceByWords.Count < 1)
+                return null;
             return sentenceByWords;
         }
 
