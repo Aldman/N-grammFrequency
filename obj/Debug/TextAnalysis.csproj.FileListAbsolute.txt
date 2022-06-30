@@ -9,3 +9,6 @@ C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции
 C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\obj\Debug\TextAnalysis.csproj.GenerateResource.Cache
 C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\obj\Debug\TextAnalysis.exe
 C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\TextAnalysis.csproj\obj\Debug\TextAnalysis.pdb
+C:\Users\alyos\OneDrive\Рабочий стол\Проекты\VS2015\Обучение\Коллекции\N-grammFrequency\bin\Debug\TextAnalysis.exe.config
+C:\Users\alyos\OneDrive\Рабочий стол\Проекты\VS2015\Обучение\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.exe
+C:\Users\alyos\OneDrive\Рабочий стол\Проекты\VS2015\Обучение\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.pdb
