@@ -11,68 +11,51 @@ namespace TextAnalysis
 
             var countOfBiGramms = new Dictionary<string, Dictionary<string, int>>();
             var countOfTriGramms = new Dictionary<string, Dictionary<string, int>>();
-            // Разбирает текст по предложениям и заполняет словари
-            foreach (var sentence in text)
+
+            FillDictionaries(countOfBiGramms, countOfTriGramms, text);
+            ChooseMostPrivatePairs2(countOfBiGramms, countOfTriGramms);
+
+            // Заполнение результата
+            foreach (var keyOfBigram in countOfBiGramms.Keys)
             {
-                if (sentence.Count >= 2)
-                    for (int i = 0; i < sentence.Count; i++)
-                    {
-                        if (i + 1 <= sentence.Count - 1)
-                        {
-                            if (!countOfBiGramms.ContainsKey(sentence[i]))
-                                countOfBiGramms.Add(sentence[i],
-                                    new Dictionary<string, int>
-                                        {
-                                            {sentence[i + 1], 1}
-                                        });
-                            else
-                            {
-                                if (countOfBiGramms[sentence[i]]
-                                    .ContainsKey(sentence[i + 1]))
-                                        countOfBiGramms[sentence[i]][sentence[i + 1]]++;
-                                else
-                                    countOfBiGramms[sentence[i]]
-                                        .Add(sentence[i + 1], 1);
-                            }
-                        }
-                        if (i + 2 <= sentence.Count - 1)
-                        {
-                            if (!countOfTriGramms.ContainsKey(
-                                String.Format("{0} {1}", sentence[i], sentence[i + 1])))
-                                countOfTriGramms.Add(String.Format("{0} {1}", sentence[i], sentence[i + 1]),
-                                    new Dictionary<string, int>
-                                        {
-                                            {sentence[i + 2], 1}
-                                        });
-                            else
-                            {
-                                if (countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
-                                    .ContainsKey(sentence[i + 2]))
-                                    countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])][sentence[i + 2]]++;
-                                else
-                                    countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
-                                        .Add(sentence[i + 2], 1);
-                            }
-                        }
-                    }
-                ;
+                string value = null;
+                foreach (var valueOfBigram in countOfBiGramms[keyOfBigram].Keys)
+                    value = valueOfBigram;
+                result.Add(keyOfBigram, value);
             }
-            // Выбирает наиболее частотные пары с одинаковым ключем, остальное - удаляет
-            // (для биграмм)
+            foreach (var keyOfTrigram in countOfTriGramms.Keys)
+            {
+                string value = null;
+                foreach (var valueOfTrigram in countOfTriGramms[keyOfTrigram].Keys)
+                    value = valueOfTrigram;
+                result.Add(keyOfTrigram, value);
+            }
+            string example = null;
+            if (result.Count > 10)
+                example = result["stories"];
+
+            return result;
+        }
+
+        
+
+        public static void ChooseMostPrivatePairs2(Dictionary<string, Dictionary<string, int>> countOfBiGramms
+            , Dictionary<string, Dictionary<string, int>> countOfTriGramms)
+        {
             foreach (var keyOfBiGrams in countOfBiGramms.Keys)
             {
                 List<string> valuesWithMaxCount = new List<string>();
                 int maxCount = 0;
-                
+
 
                 foreach (var valueOfBigrams in countOfBiGramms[keyOfBiGrams].Keys)
                 {
                     if (countOfBiGramms[keyOfBiGrams][valueOfBigrams] > maxCount)
                     {
-                        maxCount = countOfBiGramms[keyOfBiGrams][valueOfBigrams];                        
+                        maxCount = countOfBiGramms[keyOfBiGrams][valueOfBigrams];
                         valuesWithMaxCount.Clear();
                         valuesWithMaxCount.Add(valueOfBigrams);
-                        
+
                     }
                     else if (countOfBiGramms[keyOfBiGrams][valueOfBigrams] == maxCount)
                     {
@@ -99,8 +82,6 @@ namespace TextAnalysis
                 valuesWithMaxCount.Clear();
             }
 
-            // Выбирает наиболее частотные пары с одинаковым ключем, остальное - удаляет
-            // (для триграмм)
             foreach (var keyOfTriGrams in countOfTriGramms.Keys)
             {
                 List<string> valuesWithMaxCount = new List<string>();
@@ -140,27 +121,56 @@ namespace TextAnalysis
 
                 valuesWithMaxCount.Clear();
             }
+        }
 
-            // Заполнение результата
-            foreach (var keyOfBigram in countOfBiGramms.Keys)
+        public static void FillDictionaries(Dictionary<string, Dictionary<string, int>> countOfBiGramms
+            , Dictionary<string, Dictionary<string, int>> countOfTriGramms
+            , List<List<string>> text)
+        {
+            foreach (var sentence in text)
             {
-                string value = null;
-                foreach (var valueOfBigram in countOfBiGramms[keyOfBigram].Keys)
-                    value = valueOfBigram;
-                result.Add(keyOfBigram, value);
+                if (sentence.Count >= 2)
+                    for (int i = 0; i < sentence.Count; i++)
+                    {
+                        if (i + 1 <= sentence.Count - 1)
+                        {
+                            if (!countOfBiGramms.ContainsKey(sentence[i]))
+                                countOfBiGramms.Add(sentence[i],
+                                    new Dictionary<string, int>
+                                        {
+                                            {sentence[i + 1], 1}
+                                        });
+                            else
+                            {
+                                if (countOfBiGramms[sentence[i]]
+                                    .ContainsKey(sentence[i + 1]))
+                                    countOfBiGramms[sentence[i]][sentence[i + 1]]++;
+                                else
+                                    countOfBiGramms[sentence[i]]
+                                        .Add(sentence[i + 1], 1);
+                            }
+                        }
+                        if (i + 2 <= sentence.Count - 1)
+                        {
+                            if (!countOfTriGramms.ContainsKey(
+                                String.Format("{0} {1}", sentence[i], sentence[i + 1])))
+                                countOfTriGramms.Add(String.Format("{0} {1}", sentence[i], sentence[i + 1]),
+                                    new Dictionary<string, int>
+                                        {
+                                            {sentence[i + 2], 1}
+                                        });
+                            else
+                            {
+                                if (countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
+                                    .ContainsKey(sentence[i + 2]))
+                                    countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])][sentence[i + 2]]++;
+                                else
+                                    countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
+                                        .Add(sentence[i + 2], 1);
+                            }
+                        }
+                    }
             }
-            foreach (var keyOfTrigram in countOfTriGramms.Keys)
-            {
-                string value = null;
-                foreach (var valueOfTrigram in countOfTriGramms[keyOfTrigram].Keys)
-                    value = valueOfTrigram;
-                result.Add(keyOfTrigram, value);
-            }
-            string example = null;
-            if (result.Count > 10)
-                example = result["stories"];
-
-            return result;
         }
     }
 }
