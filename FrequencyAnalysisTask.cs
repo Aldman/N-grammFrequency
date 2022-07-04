@@ -29,7 +29,7 @@ namespace TextAnalysis
                             {
                                 if (countOfBiGramms[sentence[i]]
                                     .ContainsKey(sentence[i + 1]))
-                                    countOfBiGramms[sentence[i]][sentence[i + 1]]++;
+                                        countOfBiGramms[sentence[i]][sentence[i + 1]]++;
                                 else
                                     countOfBiGramms[sentence[i]]
                                         .Add(sentence[i + 1], 1);
@@ -37,20 +37,20 @@ namespace TextAnalysis
                         }
                         if (i + 2 <= sentence.Count - 1)
                         {
-                            if (!countOfBiGramms.ContainsKey(
+                            if (!countOfTriGramms.ContainsKey(
                                 String.Format("{0} {1}", sentence[i], sentence[i + 1])))
-                                countOfBiGramms.Add(String.Format("{0} {1}", sentence[i], sentence[i + 1]),
+                                countOfTriGramms.Add(String.Format("{0} {1}", sentence[i], sentence[i + 1]),
                                     new Dictionary<string, int>
                                         {
                                             {sentence[i + 2], 1}
                                         });
                             else
                             {
-                                if (countOfBiGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
+                                if (countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
                                     .ContainsKey(sentence[i + 2]))
-                                    countOfBiGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])][sentence[i + 2]]++;
+                                    countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])][sentence[i + 2]]++;
                                 else
-                                    countOfBiGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
+                                    countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
                                         .Add(sentence[i + 2], 1);
                             }
                         }
@@ -93,7 +93,8 @@ namespace TextAnalysis
                         }
                     }
                 }
-                result.Add(keyOfBiGrams, valueWithMinLecsik);
+                countOfBiGramms[keyOfBiGrams].Clear();
+                countOfBiGramms[keyOfBiGrams].Add(valueWithMinLecsik, 1);
 
                 valuesWithMaxCount.Clear();
             }
@@ -110,12 +111,12 @@ namespace TextAnalysis
                 {
                     if (countOfTriGramms[keyOfTriGrams][valueOfTrigrams] > maxCount)
                     {
-                        maxCount = countOfBiGramms[keyOfTriGrams][valueOfTrigrams];
+                        maxCount = countOfTriGramms[keyOfTriGrams][valueOfTrigrams];
                         valuesWithMaxCount.Clear();
                         valuesWithMaxCount.Add(valueOfTrigrams);
 
                     }
-                    else if (countOfBiGramms[keyOfTriGrams][valueOfTrigrams] == maxCount)
+                    else if (countOfTriGramms[keyOfTriGrams][valueOfTrigrams] == maxCount)
                     {
                         valuesWithMaxCount.Add(valueOfTrigrams);
                     }
@@ -134,10 +135,30 @@ namespace TextAnalysis
                         }
                     }
                 }
-                result.Add(keyOfTriGrams, valueWithMinLecsik);
+                countOfTriGramms[keyOfTriGrams].Clear();
+                countOfTriGramms[keyOfTriGrams].Add(valueWithMinLecsik, 1);
 
                 valuesWithMaxCount.Clear();
             }
+
+            // Заполнение результата
+            foreach (var keyOfBigram in countOfBiGramms.Keys)
+            {
+                string value = null;
+                foreach (var valueOfBigram in countOfBiGramms[keyOfBigram].Keys)
+                    value = valueOfBigram;
+                result.Add(keyOfBigram, value);
+            }
+            foreach (var keyOfTrigram in countOfTriGramms.Keys)
+            {
+                string value = null;
+                foreach (var valueOfTrigram in countOfTriGramms[keyOfTrigram].Keys)
+                    value = valueOfTrigram;
+                result.Add(keyOfTrigram, value);
+            }
+            string example = null;
+            if (result.Count > 10)
+                example = result["stories"];
 
             return result;
         }
