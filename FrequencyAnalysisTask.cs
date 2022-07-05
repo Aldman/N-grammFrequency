@@ -13,23 +13,12 @@ namespace TextAnalysis
             var countOfTriGramms = new Dictionary<string, Dictionary<string, int>>();
 
             FillDictionaries(countOfBiGramms, countOfTriGramms, text);
-            ChooseMostPrivatePairs2(countOfBiGramms, countOfTriGramms);
+            var resultOfBigramms = ChooseMostPrivatePairs(countOfBiGramms);
+            var resultOfTrigramms = ChooseMostPrivatePairs(countOfTriGramms);
 
-            // Заполнение результата
-            foreach (var keyOfBigram in countOfBiGramms.Keys)
-            {
-                string value = null;
-                foreach (var valueOfBigram in countOfBiGramms[keyOfBigram].Keys)
-                    value = valueOfBigram;
-                result.Add(keyOfBigram, value);
-            }
-            foreach (var keyOfTrigram in countOfTriGramms.Keys)
-            {
-                string value = null;
-                foreach (var valueOfTrigram in countOfTriGramms[keyOfTrigram].Keys)
-                    value = valueOfTrigram;
-                result.Add(keyOfTrigram, value);
-            }
+            FillResultByNGramms(resultOfBigramms, result);
+            FillResultByNGramms(resultOfTrigramms, result);
+            
             string example = null;
             if (result.Count > 10)
                 example = result["stories"];
@@ -37,91 +26,54 @@ namespace TextAnalysis
             return result;
         }
 
-        
-
-        public static void ChooseMostPrivatePairs2(Dictionary<string, Dictionary<string, int>> countOfBiGramms
-            , Dictionary<string, Dictionary<string, int>> countOfTriGramms)
+        public static void FillResultByNGramms 
+            (Dictionary<string, string> resultOfNgramms
+            , Dictionary<string, string> result)
         {
-            foreach (var keyOfBiGrams in countOfBiGramms.Keys)
-            {
-                List<string> valuesWithMaxCount = new List<string>();
-                int maxCount = 0;
-
-
-                foreach (var valueOfBigrams in countOfBiGramms[keyOfBiGrams].Keys)
-                {
-                    if (countOfBiGramms[keyOfBiGrams][valueOfBigrams] > maxCount)
-                    {
-                        maxCount = countOfBiGramms[keyOfBiGrams][valueOfBigrams];
-                        valuesWithMaxCount.Clear();
-                        valuesWithMaxCount.Add(valueOfBigrams);
-
-                    }
-                    else if (countOfBiGramms[keyOfBiGrams][valueOfBigrams] == maxCount)
-                    {
-                        valuesWithMaxCount.Add(valueOfBigrams);
-                    }
-                }
-
-                string valueWithMinLecsik = valuesWithMaxCount[0];
-                if (valuesWithMaxCount.Count > 1)
-                {
-                    valueWithMinLecsik = valuesWithMaxCount[1];
-                    for (int i = 0; i < valuesWithMaxCount.Count; i++)
-                    {
-                        if (i + 1 <= valuesWithMaxCount.Count - 1)
-                        {
-                            if (string.CompareOrdinal(valuesWithMaxCount[i], valueWithMinLecsik) < 0)
-                                valueWithMinLecsik = valuesWithMaxCount[i];
-                        }
-                    }
-                }
-                countOfBiGramms[keyOfBiGrams].Clear();
-                countOfBiGramms[keyOfBiGrams].Add(valueWithMinLecsik, 1);
-
-                valuesWithMaxCount.Clear();
-            }
-
-            foreach (var keyOfTriGrams in countOfTriGramms.Keys)
-            {
-                List<string> valuesWithMaxCount = new List<string>();
-                int maxCount = 0;
-
-
-                foreach (var valueOfTrigrams in countOfTriGramms[keyOfTriGrams].Keys)
-                {
-                    if (countOfTriGramms[keyOfTriGrams][valueOfTrigrams] > maxCount)
-                    {
-                        maxCount = countOfTriGramms[keyOfTriGrams][valueOfTrigrams];
-                        valuesWithMaxCount.Clear();
-                        valuesWithMaxCount.Add(valueOfTrigrams);
-
-                    }
-                    else if (countOfTriGramms[keyOfTriGrams][valueOfTrigrams] == maxCount)
-                    {
-                        valuesWithMaxCount.Add(valueOfTrigrams);
-                    }
-                }
-
-                string valueWithMinLecsik = valuesWithMaxCount[0];
-                if (valuesWithMaxCount.Count > 1)
-                {
-                    valueWithMinLecsik = valuesWithMaxCount[1];
-                    for (int i = 0; i < valuesWithMaxCount.Count; i++)
-                    {
-                        if (i + 1 <= valuesWithMaxCount.Count - 1)
-                        {
-                            if (string.CompareOrdinal(valuesWithMaxCount[i], valueWithMinLecsik) < 0)
-                                valueWithMinLecsik = valuesWithMaxCount[i];
-                        }
-                    }
-                }
-                countOfTriGramms[keyOfTriGrams].Clear();
-                countOfTriGramms[keyOfTriGrams].Add(valueWithMinLecsik, 1);
-
-                valuesWithMaxCount.Clear();
-            }
+            foreach (var keyOfNGram in resultOfNgramms.Keys)
+                result.Add(keyOfNGram, resultOfNgramms[keyOfNGram]);
         }
+
+        public static Dictionary<string, string> ChooseMostPrivatePairs
+            (Dictionary<string, Dictionary<string, int>> countOfNGramms)
+        {
+            var resultOfNgramms = new Dictionary<string, string>();
+            foreach (var keyOfNGram in countOfNGramms.Keys)
+            {
+                List<string> valuesWithMaxCount = new List<string>();
+                int maxCount = 0;
+                foreach (var valueOfNgrams in countOfNGramms[keyOfNGram].Keys)
+                {
+                    if (countOfNGramms[keyOfNGram][valueOfNgrams] > maxCount)
+                    {
+                        maxCount = countOfNGramms[keyOfNGram][valueOfNgrams];
+                        valuesWithMaxCount.Clear();
+                        valuesWithMaxCount.Add(valueOfNgrams);
+                    }
+                    else if (countOfNGramms[keyOfNGram][valueOfNgrams] == maxCount)
+                    {
+                        valuesWithMaxCount.Add(valueOfNgrams);
+                    }
+                }
+                string valueWithMinLecsik = valuesWithMaxCount[0];
+                if (valuesWithMaxCount.Count > 1)
+                {
+                    valueWithMinLecsik = valuesWithMaxCount[1];
+                    for (int i = 0; i < valuesWithMaxCount.Count; i++)
+                    {
+                        if (i + 1 <= valuesWithMaxCount.Count)
+                        {
+                            if (string.CompareOrdinal(valuesWithMaxCount[i], valueWithMinLecsik) < 0)
+                                valueWithMinLecsik = valuesWithMaxCount[i];
+                        }
+                    }
+                }
+                resultOfNgramms.Add(keyOfNGram, valueWithMinLecsik);
+                valuesWithMaxCount.Clear();
+            }
+            return resultOfNgramms;
+        }
+       
 
         public static void FillDictionaries(Dictionary<string, Dictionary<string, int>> countOfBiGramms
             , Dictionary<string, Dictionary<string, int>> countOfTriGramms

@@ -20,3 +20,14 @@ C:\Users\alyos\OneDrive\Рабочий стол\Проекты\VS2015\Обуче
 C:\Users\alyos\OneDrive\Рабочий стол\Проекты\VS2015\Обучение\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.csprojResolveAssemblyReference.cache
 C:\Users\alyos\OneDrive\Рабочий стол\Проекты\VS2015\Обучение\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.Properties.Resources.resources
 C:\Users\alyos\OneDrive\Рабочий стол\Проекты\VS2015\Обучение\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.csproj.GenerateResource.Cache
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\bin\Debug\TextAnalysis.exe.config
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.exe
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.pdb
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\bin\Debug\HarryPotterText.txt
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\bin\Debug\TextAnalysis.exe
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\bin\Debug\TextAnalysis.pdb
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\bin\Debug\nunit.framework.dll
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\bin\Debug\nunitlite.dll
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.csprojResolveAssemblyReference.cache
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.Properties.Resources.resources
+C:\Users\AleshkinDV\Desktop\C# наброски\VS15\Курс\Коллекции\N-grammFrequency\obj\Debug\TextAnalysis.csproj.GenerateResource.Cache
