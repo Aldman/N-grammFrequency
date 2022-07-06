@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TextAnalysis
 {
     enum MaxLevelOfFrequency
     {
+        Empty = 0,
         Bigramms = 1,
         Trigramms = 2,
         Fourgramms = 3
