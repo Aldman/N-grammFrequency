@@ -5,9 +5,9 @@ namespace TextAnalysis
 {
     enum MaxLevelOfFrequency
     {
-        bigramms = 1,
-        trigramms = 2,
-        fourgramms = 3
+        Bigramms = 1,
+        Trigramms = 2,
+        Fourgramms = 3
     }
 
     static class FrequencyAnalysisTask
@@ -15,26 +15,21 @@ namespace TextAnalysis
         public static Dictionary<string, string> GetMostFrequentNextWords(List<List<string>> text)
         {
             var result = new Dictionary<string, string>();
-
-            var countOfBiGramms = new Dictionary<string, Dictionary<string, int>>();
-            var countOfTriGramms = new Dictionary<string, Dictionary<string, int>>();
-
-            FillDictionaries(countOfBiGramms, countOfTriGramms, text);
-            FillDictionaries2(text, MaxLevelOfFrequency.fourgramms);
-            var resultOfBigramms = ChooseMostPrivatePairs(countOfBiGramms);
-            var resultOfTrigramms = ChooseMostPrivatePairs(countOfTriGramms);
-
-            FillResultByNGramms(resultOfBigramms, result);
-            FillResultByNGramms(resultOfTrigramms, result);
-            
-            string example = null;
-            if (result.Count > 10)
-                example = result["stories"];
-
+            var countOfNgramms = FillDictionaries(text, MaxLevelOfFrequency.Trigramms);
+            var resultOfNgramms = new List<Dictionary<string, string>>();
+            for (int i = 0; i < (int)MaxLevelOfFrequency.Trigramms; i++)
+            {
+                resultOfNgramms.Add(new Dictionary<string, string>());
+                var betweenResult = ChooseMostPrivatePairs(countOfNgramms[i]);
+                foreach (var key in betweenResult.Keys)
+                    resultOfNgramms[i].Add(key, betweenResult[key]);
+                FillResultByNGramms(resultOfNgramms[i], result);
+            }
+         
             return result;
         }
 
-        public static void FillResultByNGramms 
+        public static void FillResultByNGramms
             (Dictionary<string, string> resultOfNgramms
             , Dictionary<string, string> result)
         {
@@ -82,7 +77,7 @@ namespace TextAnalysis
             return resultOfNgramms;
         }
 
-        public static List<Dictionary<string, Dictionary<string, int>>> FillDictionaries2(
+        public static List<Dictionary<string, Dictionary<string, int>>> FillDictionaries(
              List<List<string>> text, MaxLevelOfFrequency maxLevelOfFrequency)
         {
             var countOfNgramms = new List<Dictionary<string, Dictionary<string, int>>>();
@@ -105,115 +100,29 @@ namespace TextAnalysis
                                     keyOfNgramm += sentence[i + k] + " ";
                                 }
                                 keyOfNgramm = keyOfNgramm.TrimEnd(' ');
-
-                                //if (!countOfBiGramms.ContainsKey(sentence[i]))
-                                //    countOfBiGramms.Add(sentence[i],
-                                //        new Dictionary<string, int>
-                                //            {
-                                //                {sentence[i + 1], 1}
-                                //            });
-                                //else
-                                //{
-                                //    if (countOfBiGramms[sentence[i]]
-                                //        .ContainsKey(sentence[i + 1]))
-                                //        countOfBiGramms[sentence[i]][sentence[i + 1]]++;
-                                //    else
-                                //        countOfBiGramms[sentence[i]]
-                                //            .Add(sentence[i + 1], 1);
-                                //}
+                                int ngrammNumber = j - 1;
+                                string ngrammValue = sentence[i + j];
+                                if (!countOfNgramms[ngrammNumber].ContainsKey(keyOfNgramm))
+                                    countOfNgramms[ngrammNumber].Add(keyOfNgramm,
+                                        new Dictionary<string, int>
+                                        {
+                                            {ngrammValue, 1 }
+                                        });
+                                else
+                                {
+                                    if (countOfNgramms[ngrammNumber][keyOfNgramm]
+                                            .ContainsKey(ngrammValue))
+                                        countOfNgramms[ngrammNumber][keyOfNgramm][ngrammValue]++;
+                                    else
+                                        countOfNgramms[ngrammNumber][keyOfNgramm]
+                                            .Add(ngrammValue, 1);
+                                }
                             }
                         }
-                        // Old code
-                        //if (i + 1 <= sentence.Count - 1)
-                        //{
-                        //    if (!countOfBiGramms.ContainsKey(sentence[i]))
-                        //        countOfBiGramms.Add(sentence[i],
-                        //            new Dictionary<string, int>
-                        //                {
-                        //                    {sentence[i + 1], 1}
-                        //                });
-                        //    else
-                        //    {
-                        //        if (countOfBiGramms[sentence[i]]
-                        //            .ContainsKey(sentence[i + 1]))
-                        //            countOfBiGramms[sentence[i]][sentence[i + 1]]++;
-                        //        else
-                        //            countOfBiGramms[sentence[i]]
-                        //                .Add(sentence[i + 1], 1);
-                        //    }
-                        //}
-                        //if (i + 2 <= sentence.Count - 1)
-                        //{
-                        //    if (!countOfTriGramms.ContainsKey(
-                        //        String.Format("{0} {1}", sentence[i], sentence[i + 1])))
-                        //        countOfTriGramms.Add(String.Format("{0} {1}", sentence[i], sentence[i + 1]),
-                        //            new Dictionary<string, int>
-                        //                {
-                        //                    {sentence[i + 2], 1}
-                        //                });
-                        //    else
-                        //    {
-                        //        if (countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
-                        //            .ContainsKey(sentence[i + 2]))
-                        //            countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])][sentence[i + 2]]++;
-                        //        else
-                        //            countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
-                        //                .Add(sentence[i + 2], 1);
-                        //    }
-                        //}
                     }
             }
             return countOfNgramms;
         }
-
-        public static void FillDictionaries(Dictionary<string, Dictionary<string, int>> countOfBiGramms
-            , Dictionary<string, Dictionary<string, int>> countOfTriGramms
-            , List<List<string>> text)
-        {
-            foreach (var sentence in text)
-            {
-                if (sentence.Count >= 2)
-                    for (int i = 0; i < sentence.Count; i++)
-                    {
-                        if (i + 1 <= sentence.Count - 1)
-                        {
-                            if (!countOfBiGramms.ContainsKey(sentence[i]))
-                                countOfBiGramms.Add(sentence[i],
-                                    new Dictionary<string, int>
-                                        {
-                                            {sentence[i + 1], 1}
-                                        });
-                            else
-                            {
-                                if (countOfBiGramms[sentence[i]]
-                                    .ContainsKey(sentence[i + 1]))
-                                    countOfBiGramms[sentence[i]][sentence[i + 1]]++;
-                                else
-                                    countOfBiGramms[sentence[i]]
-                                        .Add(sentence[i + 1], 1);
-                            }
-                        }
-                        if (i + 2 <= sentence.Count - 1)
-                        {
-                            if (!countOfTriGramms.ContainsKey(
-                                String.Format("{0} {1}", sentence[i], sentence[i + 1])))
-                                countOfTriGramms.Add(String.Format("{0} {1}", sentence[i], sentence[i + 1]),
-                                    new Dictionary<string, int>
-                                        {
-                                            {sentence[i + 2], 1}
-                                        });
-                            else
-                            {
-                                if (countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
-                                    .ContainsKey(sentence[i + 2]))
-                                    countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])][sentence[i + 2]]++;
-                                else
-                                    countOfTriGramms[String.Format("{0} {1}", sentence[i], sentence[i + 1])]
-                                        .Add(sentence[i + 2], 1);
-                            }
-                        }
-                    }
-            }
-        }
+        
     }
 }
