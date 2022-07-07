@@ -2,7 +2,7 @@
 
 namespace TextAnalysis
 {
-    enum MaxLevelOfFrequency
+    enum LevelOfNgramm
     {
         Empty = 0,
         Bigramms = 1,
@@ -15,9 +15,9 @@ namespace TextAnalysis
         public static Dictionary<string, string> GetMostFrequentNextWords(List<List<string>> text)
         {
             var result = new Dictionary<string, string>();
-            var countOfNgramms = FillDictionaries(text, MaxLevelOfFrequency.Trigramms);
+            var countOfNgramms = FillDictionaries(text, LevelOfNgramm.Trigramms);
             var resultOfNgramms = new List<Dictionary<string, string>>();
-            for (int i = 0; i < (int)MaxLevelOfFrequency.Trigramms; i++)
+            for (int i = 0; i < (int)LevelOfNgramm.Trigramms; i++)
             {
                 resultOfNgramms.Add(new Dictionary<string, string>());
                 var betweenResult = ChooseMostPrivatePairs(countOfNgramms[i]);
@@ -78,7 +78,7 @@ namespace TextAnalysis
         }
 
         public static List<Dictionary<string, Dictionary<string, int>>> FillDictionaries(
-             List<List<string>> text, MaxLevelOfFrequency maxLevelOfFrequency)
+             List<List<string>> text, LevelOfNgramm maxLevelOfFrequency)
         {
             var countOfNgramms = new List<Dictionary<string, Dictionary<string, int>>>();
             for (int i = 0; i < (int)maxLevelOfFrequency; i++)

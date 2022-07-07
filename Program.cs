@@ -14,9 +14,9 @@ namespace TextAnalysis
             // Все непрошедшие тесты 
             var testsToRun = new string[]
             {
-                "TextAnalysis.SentencesParser_Tests",
-                "TextAnalysis.FrequencyAnalysis_Tests",
-                "TextAnalysis.TextGenerator_Tests",
+                //"TextAnalysis.SentencesParser_Tests",
+                //"TextAnalysis.FrequencyAnalysis_Tests",
+                //"TextAnalysis.TextGenerator_Tests",
             };
             new AutoRun().Execute(new[]
             {
@@ -49,7 +49,7 @@ namespace TextAnalysis
                 Console.Write("Введите первое слово (например, harry): ");
                 var beginning = Console.ReadLine();
                 if (string.IsNullOrEmpty(beginning)) return;
-                var phrase = TextGeneratorTask.ContinuePhrase(frequency, beginning.ToLower(), 10);
+                var phrase = TextGeneratorTask.ContinuePhrase(frequency, beginning.ToLower(), 14);
                 Console.WriteLine(phrase);
             }
         }

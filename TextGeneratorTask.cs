@@ -19,13 +19,7 @@ namespace TextAnalysis
                 wordsOfPhraseBegining = phraseBeginning.Split(' ');
                 foreach (var word in wordsOfPhraseBegining)
                     phraseForReturn.Add(word);
-                //FillPhraseForReturn(nextWords, wordsCount, phraseForReturn);
                 FillPhraseForReturn2(nextWords, wordsCount, phraseForReturn);
-                //if (phraseForReturn.Count > 10)
-                //{
-                //    FillPhraseForReturn2(nextWords, wordsCount, phraseForReturn);
-                //}
-
                 foreach (var word in phraseForReturn)
                     phraseBuilder.Append(word + " ");
                 phraseBeginning = phraseBuilder.ToString().TrimEnd(' ');
@@ -45,7 +39,7 @@ namespace TextAnalysis
             return keyWords;
         }
 
-        private static MaxLevelOfFrequency GetTypeOfNgramm
+        private static LevelOfNgramm GetTypeOfNgramm
             (Dictionary<string, string> nextWords)
         {
             int wordsCountInKey = 0, count = 0;
@@ -55,23 +49,22 @@ namespace TextAnalysis
                 if (wordsCountInKey < (count))
                     wordsCountInKey = count;
             }
-            
-            return (MaxLevelOfFrequency)wordsCountInKey;
+
+            return (LevelOfNgramm)wordsCountInKey;
         }
 
         private static void FillPhraseForReturn2(
-            Dictionary<string, string> nextWords, 
+            Dictionary<string, string> nextWords,
              int wordsCount, List<string> phraseForReturn)
         {
-            MaxLevelOfFrequency typeOfNgramm = GetTypeOfNgramm(nextWords);
-                
+            LevelOfNgramm maxTypeOfNgramm = GetTypeOfNgramm(nextWords);
+
             string returningWord;
-            for (int i = (int)typeOfNgramm; i >= phraseForReturn.Count; i--)
+            for (int i = (int)maxTypeOfNgramm; i >= phraseForReturn.Count; i--)
             {
-                if (phraseForReturn.Count == i)
+                if ((phraseForReturn.Count == i) && (wordsCount != 0))
                 {
-                    if (wordsCount != 0)
-                        wordsCount--;
+                    wordsCount--;
                     var keyWords = GetKeyWords(phraseForReturn, i);
                     returningWord = GetWordFromNgramm(
                         nextWords, keyWords);
@@ -81,11 +74,11 @@ namespace TextAnalysis
                         phraseForReturn.Add(returningWord);
                 }
             }
-            
+
             for (int i = 0; i < wordsCount; i++)
             {
                 var keyWords = GetKeyWords(phraseForReturn,
-                    (int)typeOfNgramm);
+                    (int)maxTypeOfNgramm);
                 returningWord = GetWordFromNgramm(
                         nextWords, keyWords);
                 if (String.IsNullOrEmpty(returningWord))
@@ -96,10 +89,10 @@ namespace TextAnalysis
         }
 
         private static string GetKeyFromWords(
-            List<string> words, MaxLevelOfFrequency typeOfNgramm)
+            List<string> words, LevelOfNgramm typeOfNgramm)
         {
             var keyFromWords = new StringBuilder();
-            
+
             for (int i = (int)typeOfNgramm; i > 0; i--)
             {
                 keyFromWords.Append(words[words.Count - i] + " ");
@@ -111,53 +104,27 @@ namespace TextAnalysis
              Dictionary<string, string> nextWords,
              List<string> words)
         {
-            var typeOfNgramm = GetTypeOfNgramm(nextWords);
-            var key = GetKeyFromWords(words, typeOfNgramm);
-            for (int i = (int)typeOfNgramm; i > 0; i--)
+            var typeOfNgramm = words.Count;
+            var key = GetKeyFromWords(words, (LevelOfNgramm)typeOfNgramm);
+            for (int i = typeOfNgramm; i > 0; i--)
             {
                 if (nextWords.ContainsKey(key))
                     break;
+                else
+                {
+                    words.RemoveAt(0);
+                    if (words.Count != 0)
+                    {
+                        if (words.Count >= i)
+                            key = GetKeyFromWords
+                                (words, (LevelOfNgramm)i);
+                        else
+                            key = GetKeyFromWords
+                                (words, (LevelOfNgramm)words.Count);
+                    }
+                }
             }
             return GetWordContinued(nextWords, key);
-        }
-
-        private static void FillPhraseForReturn(
-            Dictionary<string, string> nextWords,
-             int wordsCount, List<string> phraseForReturn)
-        {
-            string startWord, endWord, returningWord;
-            if ((phraseForReturn.Count == 1) && (wordsCount > 0))
-            {
-                wordsCount--;
-                returningWord = GetWordContinued(nextWords,
-                        phraseForReturn[phraseForReturn.Count - 1]);
-                if (String.IsNullOrEmpty(returningWord))
-                    return;
-                else
-                    phraseForReturn.Add(returningWord);
-            }
-            for (int i = 0; i < wordsCount; i++)
-            {
-                startWord = phraseForReturn[phraseForReturn.Count - 2];
-                endWord = phraseForReturn[phraseForReturn.Count - 1];
-                returningWord = GetWordFromTrigram(
-                        nextWords, startWord, endWord);
-                if (String.IsNullOrEmpty(returningWord))
-                    return;
-                else
-                    phraseForReturn.Add(returningWord);
-            }
-        }
-
-        private static string GetWordFromTrigram(
-             Dictionary<string, string> nextWords,
-             string startWord, string endWord)
-        {
-            var trigramKey = String.Format("{0} {1}", startWord, endWord);
-            if (!nextWords.ContainsKey(trigramKey))
-                return GetWordContinued(nextWords, endWord);
-            else
-                return GetWordContinued(nextWords, trigramKey);
         }
 
         private static string GetWordContinued(
