@@ -68,6 +68,8 @@ namespace TextAnalysis
                     var keyWords = GetKeyWords(phraseForReturn, i);
                     returningWord = GetWordFromNgramm(
                         nextWords, keyWords);
+                    if (i == phraseForReturn.Count && i != (int)maxTypeOfNgramm)
+                        i = (int)maxTypeOfNgramm;
                     if (String.IsNullOrEmpty(returningWord))
                         return;
                     else

@@ -7,7 +7,8 @@ namespace TextAnalysis
         Empty = 0,
         Bigramms = 1,
         Trigramms = 2,
-        Fourgramms = 3
+        Fourgramms = 3,
+        Fivegrams = 4
     }
 
     static class FrequencyAnalysisTask

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Text;
 using System.IO;
 using NUnitLite;
 
@@ -25,7 +25,8 @@ namespace TextAnalysis
                 "--test=" + string.Join(",", testsToRun)
             });
 
-            var text = File.ReadAllText("HarryPotterText.txt");
+            var text = File.ReadAllText("Война и мир.txt", Encoding.GetEncoding(1251));
+            //var text = File.ReadAllText("HarryPotterText.txt", Encoding.GetEncoding(1251));
             var sentences = SentencesParserTask.ParseSentences(text);
             var frequency = FrequencyAnalysisTask.GetMostFrequentNextWords(sentences);
             //Расскомментируйте этот блок, если хотите выполнить последнюю задачу до первых двух.
@@ -44,12 +45,13 @@ namespace TextAnalysis
                 {"wizard", "harry" },
             };
             */
+            Random random = new Random();
             while (true)
             {
                 Console.Write("Введите первое слово (например, harry): ");
                 var beginning = Console.ReadLine();
                 if (string.IsNullOrEmpty(beginning)) return;
-                var phrase = TextGeneratorTask.ContinuePhrase(frequency, beginning.ToLower(), 14);
+                var phrase = TextGeneratorTask.ContinuePhrase(frequency, beginning.ToLower(), random.Next(5, 25));
                 Console.WriteLine(phrase);
             }
         }
